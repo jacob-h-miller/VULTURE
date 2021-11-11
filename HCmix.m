@@ -1,0 +1,13 @@
+% Determine specs of a mix containing exclusively hydrocarbons.
+%  Jake Miller, June 18, 2021
+function HCmixspecs = HCmix(VFAmatrix,VPsubset)
+new_molfracs = VFAmatrix(:,3) ./ sum(VFAmatrix(:,3));
+HCmixspecs =[RaoultsLawCalc(new_molfracs,VPsubset), WickeyChittendenFP(VFAmatrix(:,13),VFAmatrix(:,14)),...
+    LinearBlend(VFAmatrix(:,6),VFAmatrix(:,end)), GNviscosity(new_molfracs,VFAmatrix(:,7)),...
+    LinearBlend(VFAmatrix(:,8),VFAmatrix(:,end)), LinearBlend(VFAmatrix(:,9),VFAmatrix(:,end)),...
+    LinearBlend(VFAmatrix(:,10),VFAmatrix(:,3)), LinearBlend(VFAmatrix(:,11),VFAmatrix(:,3)),...
+    GNviscosity(new_molfracs,VFAmatrix(:,15)), GNviscosity(new_molfracs,VFAmatrix(:,16))];
+% Note: RON and CN (fourth and third to last properties) use mole fraction
+% instead of mass fraction. Viscosity at 40C is second to last property and
+% viscosity at -40C is the last property.
+end
